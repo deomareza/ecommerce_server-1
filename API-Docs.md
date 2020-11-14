@@ -1,53 +1,3 @@
-# {{Request.Name}}
-
-{{Request.Description}}
-
-### Prerequisites
-
-One of the following scopes are required to execute this request:
-
-{{#foreach Request.Scopes}}
-* {{Name}}
-{{/foreach}}
-
-### HTTP Request
-
-```
-{{Request.ExampleRequestUrl}}
-```
-### Request parameters
-
-In the request URL, provide the following query parameters with values.
-
-| Parameter | Type | Description |
-|:----------|:-----|:------------|
-
-### Optional request headers
-
-| Name | Value |
-|:-----|:------|
-
-### Request body
-
-Do not supply a request body with this method.
-
-### Example
-
-##### Request
-
-```http
-```
-
-##### Response
-
-```http
-```
-
-### Remarks
-
-----
-
-
 # Create New Product
 
 Create new product and insert to database
@@ -295,5 +245,125 @@ Status : `400`
 ```json
   {
     "message" : "BAD REQUEST"
+  }
+```
+
+# User Register
+
+New user register
+
+### Methods
+
+`POST`
+
+### HTTP Request
+
+```
+/user/register
+```
+### Request parameters
+
+NO URL Query or Parameters needed
+
+### Optional request headers
+
+NO Headers needed
+
+### Request body
+
+
+| Property | Type | Description |
+|:---------|:-----|:------------|
+| email | String | User email address |
+| password | String | User password |
+| [ role ] | String | User role (admin or user) |
+
+Note : if role is not defined, it defaults as user
+
+
+### Example
+
+##### Response
+**SUCCESS :**
+
+Status : `201`
+
+```json
+  {
+    "id" : 1,
+    "email" : "test@email.com",
+  }
+```
+**ERROR :**
+
+Status : `400`
+
+```json
+  {
+    "message" : "BAD REQUEST"
+  }
+```
+
+
+# User Login
+
+New user register
+
+### Methods
+
+`POST`
+
+### HTTP Request
+
+```
+/user/login
+```
+### Request parameters
+
+NO URL Query or Parameters needed
+
+### Optional request headers
+
+NO Headers needed
+
+### Request body
+
+
+| Property | Type | Description |
+|:---------|:-----|:------------|
+| email | String | User email address |
+| password | String | User password |
+
+
+
+### Example
+
+##### Response
+**SUCCESS :**
+
+Status : `201`
+
+```json
+  {
+    "access_token" : "access_token"
+  }
+```
+**ERROR :**
+
+Status : `400`
+
+```json
+  {
+    "message"
+  }
+```
+
+**or**
+
+Status : `500`
+
+```json
+  {
+    "message" : "INTERNAL SERVER ERROR"
   }
 ```
