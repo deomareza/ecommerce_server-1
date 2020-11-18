@@ -1,4 +1,4 @@
-const { User, Cart, Product } = require('../models/')
+const { User, Cart, Product, sequelize } = require('../models/')
 const { verifyPassword } = require('../helpers/bcrypt')
 const { generateToken } = require('../helpers/jwt')
 
@@ -212,24 +212,36 @@ class UserController{
     try {
       const { userCart } = req.body
 
-      // console.log(userCart)
+      console.log(userCart)
 
-      for (let i = 0; i < userCart.length; i++) {
-        const item = userCart[i]
-        const stock = item.Product.stock - item.quantity
+      const result = await sequelize.transaction( async (t) => {
+
+        for (let i = 0; i < userCart.length; i++) {
+          const item = userCart[i]
+          const stock = item.Product.stock - item.quantity
+          
+          await Product.update({
+            stock
+          }, {
+            where : { id: item.ProductId },
+            transaction: t
+          })
+  
+          await Cart.destroy({
+            where : { id: item.id },
+            transaction: t
+          })
+        }
         
-        await Product.update({
-          stock
-        }, {
-          where : { id: item.ProductId }
-        })
+        return 'Success'
+      })
 
-        await Cart.destroy({
-          where : { id: item.id }
-        })
-      }
       
-      res.status(200).json({ message: 'Transaction successful' })
+      if (result) {
+        res.status(200).json({ message: 'Transaction successful' })
+      } else {
+        next()
+      }
 
     } catch (error) {
       next(error)
