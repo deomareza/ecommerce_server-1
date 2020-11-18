@@ -220,12 +220,16 @@ class UserController{
           const item = userCart[i]
           const stock = item.Product.stock - item.quantity
           
-          await Product.update({
+          const response = await Product.update({
             stock
           }, {
             where : { id: item.ProductId },
             transaction: t
           })
+
+          if (response[0] === 0){ // No item is changed. Presumably the stock is empty after queue
+            throw new Error(`Transaction failed`)
+          }
   
           await Cart.destroy({
             where : { id: item.id },

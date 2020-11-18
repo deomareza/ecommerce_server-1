@@ -7,8 +7,9 @@
 
 `POST /user/register`
 `POST /user/login`
+`POST /user/login/customer`
+`POST /user/checkout`
 
-// need to do : 
 `GET /user/cart`
 `POST /user/cart/:id`
 `PATCH /user/cart/:id`
@@ -323,9 +324,9 @@ Status : `400`
 ```
 
 
-# User Login
+# Admin Login
 
-User login
+Admin login
 
 ### Methods
 
@@ -335,6 +336,69 @@ User login
 
 ```
 /user/login
+```
+### Request parameters
+
+NO URL Query or Parameters needed
+
+### Request headers
+
+NO Headers needed
+
+### Request body
+
+
+| Property | Type | Description |
+|:---------|:-----|:------------|
+| email | String | User email address |
+| password | String | User password |
+
+
+
+### Example
+
+##### Response
+**SUCCESS :**
+
+Status : `201`
+
+```json
+  {
+    "access_token" : "access_token"
+  }
+```
+**ERROR :**
+
+Status : `400`
+
+```json
+  {
+    "message"
+  }
+```
+
+**or**
+
+Status : `500`
+
+```json
+  {
+    "message" : "INTERNAL SERVER ERROR"
+  }
+```
+
+# Customer Login
+
+Customer login
+
+### Methods
+
+`POST`
+
+### HTTP Request
+
+```
+/user/login/customer
 ```
 ### Request parameters
 
@@ -664,6 +728,57 @@ Status : `200`
 ```json
   {
     "message" : "Transaction successful"
+  }
+```
+**ERROR :**
+
+Status : `400`
+
+```json
+  {
+    "message" : "BAD REQUEST"
+  }
+```
+
+
+# Checkout
+
+User checkout their shopping cart
+
+### Methods
+
+`POST`
+
+### HTTP Request
+
+```
+/user/checkout
+```
+### Request parameters
+
+No URL Request
+
+### Request headers
+
+| Name | Value |
+|:-----|:------|
+|Access token | 'access token value' |
+
+
+### Request Body
+
+| Name | Type | Description |
+|:----- |:-----|:-----|
+|userCart|Array| An Array of Object that contains users' cart data |
+
+##### Response
+**SUCCESS :**
+
+Status : `200`
+
+```json
+  {
+    "message": "Transaction successful"
   }
 ```
 **ERROR :**
