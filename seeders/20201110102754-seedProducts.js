@@ -36,6 +36,22 @@ module.exports = {
         stock : 6,
         createdAt : new Date(),
         updatedAt : new Date()
+      },
+      { 
+        name: 'UT Minions2 Lengan Pendek', 
+        image_url : 'https://deo-ecommerce-bucket.s3-ap-southeast-1.amazonaws.com/products/67_428458_middles.jpg',
+        price : 149000,
+        stock : 12,
+        createdAt : new Date(),
+        updatedAt : new Date()
+      },
+      { 
+        name: 'Ikat Pinggang Italian Leather Narrow', 
+        image_url : 'https://deo-ecommerce-bucket.s3-ap-southeast-1.amazonaws.com/products/38_423844_middles.jpg',
+        price : 399000,
+        stock : 15,
+        createdAt : new Date(),
+        updatedAt : new Date()
       }
    ], {})
   },
