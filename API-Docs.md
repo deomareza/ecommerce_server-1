@@ -1,19 +1,29 @@
 # EndPoint List : 
 
 `POST /product`
+
 `GET /product`
+
 `PUT /product/:id`
+
 `DELETE /product/:id`
 
 `POST /user/register`
+
 `POST /user/login`
+
 `POST /user/login/customer`
+
 `POST /user/checkout`
+
 `GET /user/history`
 
 `GET /user/cart`
+
 `POST /user/cart/:id`
+
 `PATCH /user/cart/:id`
+
 `DELETE /user/cart/:id`
 
 
@@ -740,58 +750,6 @@ Status : `400`
     "message" : "BAD REQUEST"
   }
 ```
-
-
-# Checkout
-
-User checkout their shopping cart
-
-### Methods
-
-`POST`
-
-### HTTP Request
-
-```
-/user/checkout
-```
-### Request parameters
-
-No URL Request
-
-### Request headers
-
-| Name | Value |
-|:-----|:------|
-|Access token | 'access token value' |
-
-
-### Request Body
-
-| Name | Type | Description |
-|:----- |:-----|:-----|
-|userCart|Array| An Array of Object that contains users' cart data |
-
-##### Response
-**SUCCESS :**
-
-Status : `200`
-
-```json
-  {
-    "message": "Transaction successful"
-  }
-```
-**ERROR :**
-
-Status : `400`
-
-```json
-  {
-    "message" : "BAD REQUEST"
-  }
-```
-
 
 # Fetch User History
 
