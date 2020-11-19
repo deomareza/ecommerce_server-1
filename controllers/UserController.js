@@ -1,4 +1,4 @@
-const { User, Cart, Product, sequelize } = require('../models/')
+const { User, Cart, Product, History } = require('../models/')
 const { verifyPassword } = require('../helpers/bcrypt')
 const { generateToken } = require('../helpers/jwt')
 const { checkoutQueue } = require('../helpers/queue')
@@ -214,6 +214,25 @@ class UserController{
 
       res.status(200).json({ message: 'Item has been deleted'})
       
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async fetchUserHistory (req, res, next) {
+    try {
+      const { id } = req.loggedInUser
+
+      const userHistory = await History.findAll({
+        where: {
+          UserId: id
+        },
+        order: [['createdAt', 'ASC']],
+        include: [Product]
+      })
+
+      res.status(200).json(userHistory)
+
     } catch (error) {
       next(error)
     }

@@ -1,5 +1,5 @@
 const Queue = require('bull')
-const { Product, Cart, sequelize } = require('../models/')
+const { Product, Cart, History, sequelize } = require('../models/')
 const { setQueues } = require('bull-board')
 const REDIS_URL = process.env.REDISCLOUD_URL
 
@@ -21,6 +21,12 @@ checkoutQueue.process( async (job, done) => {
           }, {
             where : { id: item.ProductId },
             transaction: t
+          })
+
+          await History.create({
+            UserId: item.UserId,
+            ProductId: item.ProductId,
+            quantity: item.quantity
           })
 
           await Cart.destroy({

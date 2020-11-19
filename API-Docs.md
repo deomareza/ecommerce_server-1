@@ -9,6 +9,7 @@
 `POST /user/login`
 `POST /user/login/customer`
 `POST /user/checkout`
+`GET /user/history`
 
 `GET /user/cart`
 `POST /user/cart/:id`
@@ -780,6 +781,74 @@ Status : `200`
   {
     "message": "Transaction successful"
   }
+```
+**ERROR :**
+
+Status : `400`
+
+```json
+  {
+    "message" : "BAD REQUEST"
+  }
+```
+
+
+# Fetch User History
+
+Get User Past Purchase
+
+### Methods
+
+`GET`
+
+### HTTP Request
+
+```
+/user/history
+```
+
+### Request headers
+
+| Name | Value |
+|:-----|:------|
+|Access token | 'access token value' |
+
+
+
+##### Response
+**SUCCESS :**
+
+Status : `200`
+
+```json
+  [
+    {
+      "id": 5,
+      "UserId": 2,
+      "ProductId": 5,
+      "quantity": 1,
+      "Product": {
+        "id": 5,
+        "name": "T-Shirt Slub Jersey Crew Neck Lengan Pendek",
+        "image_url": "https://im.uniqlo.com/images/common/pc/goods/422996/item/00_422996_middles.jpg",
+        "price": 99000,
+        "stock": 7
+      }
+    },
+    {
+      "id": 4,
+      "UserId": 2,
+      "ProductId": 4,
+      "quantity": 1,
+      "Product": {
+        "id": 4,
+        "name": "T-Shirt Dry Crew Neck Lengan Pendek",
+        "image_url": "https://im.uniqlo.com/images/common/pc/goods/431599/item/47_431599_middles.jpg",
+        "price": 149000,
+        "stock": 10
+      }
+    }
+  ]
 ```
 **ERROR :**
 
