@@ -1,8 +1,9 @@
 const Queue = require('bull')
 const { Product, Cart, sequelize } = require('../models/')
 const { setQueues } = require('bull-board')
+const REDIS_URL = process.env.REDISCLOUD_URL
 
-const checkoutQueue = new Queue('Checkout Queue', 'redis://127.0.0.1:6379')
+const checkoutQueue = new Queue('Checkout Queue', REDIS_URL)
 setQueues([checkoutQueue])
 
 checkoutQueue.process( async (job, done) => {
