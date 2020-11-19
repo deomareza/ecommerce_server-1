@@ -1,15 +1,26 @@
 const { User, Cart, Product, sequelize } = require('../models/')
 const { verifyPassword } = require('../helpers/bcrypt')
 const { generateToken } = require('../helpers/jwt')
+const { checkoutQueue } = require('../helpers/queue')
 
 class UserController{
   static async register(req, res, next) {
     try {
 
       let { email, password, role } = req.body
+      console.log(req.body)
+      let user = await User.findOne({ where: { email }})
 
-      let user = await User.create({ email, password, role})
-      res.status(201).json( { id : user.id, email : user.email } )
+      if (!user) {
+        user = await User.create({ email, password, role})
+        res.status(201).json( { id : user.id, email : user.email } )
+
+      } else {
+        next({
+          status: 400,
+          message: `Email already exists`
+        })
+      }
             
     } catch (error) {
       next(error)
@@ -212,40 +223,21 @@ class UserController{
     try {
       const { userCart } = req.body
 
-      console.log(userCart)
-
-      const result = await sequelize.transaction( async (t) => {
-
-        for (let i = 0; i < userCart.length; i++) {
-          const item = userCart[i]
-          const stock = item.Product.stock - item.quantity
-          
-          const response = await Product.update({
-            stock
-          }, {
-            where : { id: item.ProductId },
-            transaction: t
-          })
-
-          if (response[0] === 0){ // No item is changed. Presumably the stock is empty after queue
-            throw new Error(`Transaction failed`)
+      checkoutQueue
+        .add(userCart)
+        .then(job => {
+          return job.finished()
+        })
+        .then(result => {
+          if (result.error) {
+            throw result.error
+          } else {
+            return res.status(200).json({ message: 'Transaction successful' })
           }
-  
-          await Cart.destroy({
-            where : { id: item.id },
-            transaction: t
-          })
-        }
-        
-        return 'Success'
-      })
-
-      
-      if (result) {
-        res.status(200).json({ message: 'Transaction successful' })
-      } else {
-        next()
-      }
+        })
+        .catch(err => {
+          throw err
+        })
 
     } catch (error) {
       next(error)
